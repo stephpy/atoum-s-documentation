@@ -36,7 +36,7 @@ Updating phar archive is quite simple, you have to launch this command:
 
 **Note**: Updating atoum need to edit PHAR archive, by default php configuration doesn't allow it. That's why we have to use "-d phar.readonly=0".
 
-If a newer version exists, it'll automatically downloaded and installed on archive.
+If a newer version exists, it'll be automatically downloaded and installed on archive.
 
     [shell]
     php -d phar.readonly=0 mageekguy.atoum.phar --update
@@ -52,18 +52,18 @@ If there is no newer version, atoum will stop immediately.
     Checking if a new version is available... Done !
     There is no new version available !
 
-atoum don't ask any confirmation to user to update phar because it's easy to return to previous version.
+atoum doesn't ask a confirmation to user because it's easy to come back to previous version.
 
 #### List versions contained on archive
 
-To show versions contained on archive during updates, you have to call argument --list-available-versions, or -lav.
+To show versions contained on archive, you have to call argument --list-available-versions, or -lav.
 
     [shell]
     php mageekguy.atoum.phar -lav
     nightly-941-201201011548
     * nightly-1568-201210311708
 
-List of previous versions on archive is shown. Current version is preceded of "*".
+List of previous versions is shown. Current version is preceded of "*".
 
 #### Edit current version
 
@@ -85,7 +85,6 @@ To delete them, you have to use argument --delete-version, or -dv, and then the 
 
 **Note**: You cannot delete current version.
 **Note**: Changing current version need to edit PHAR archive, by default php configuration doesn't allow it. That's why we have to use "-d phar.readonly=0".
-
 
 ### Composer
 
