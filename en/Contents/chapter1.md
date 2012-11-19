@@ -12,11 +12,13 @@ atoum distinguished itself as :
 For now, atoum is not tagged with a version number. If you want to use atoum, just download the last
 stable version. atoum aims to provide backward compatibility anyway.
 
-You can install atoum by 3 ways :
-*   As a PHAR archive
-*   Using composer
-*   Cloning github repository
-*   Using zend framework 2 component
+You can install atoum by 5 ways :
+*   [As a PHAR archive](#archive-phar)
+*   [Using composer](#composer)
+*   [Cloning github repository](#github)
+*   [Using symfony 1 plugin](#plugin-symfony1)
+*   [Using Symfony 2 bundle](#bundle-symfony2)
+*   [Using zend framework 2 component](#component-zend-framework-2).
 
 ### PHAR
 
@@ -24,6 +26,66 @@ atoum is distributed as a PHAR archive, an archive format dedicated to PHP, avai
 
 You can download the latest stable version of atoum directly from the official website here :
 http://downloads.atoum.org/nightly/mageekguy.atoum.phar
+
+### Update
+
+Updating phar archive is quite simple, you have to launch this command:
+
+    [shell]
+    php -d phar.readonly=0 mageekguy.atoum.phar --update
+
+**Note**: Updating atoum need to edit PHAR archive, by default php configuration doesn't allow it. That's why we have to use "-d phar.readonly=0".
+
+If a newer version exists, it'll automatically downloaded and installed on archive.
+
+    [shell]
+    php -d phar.readonly=0 mageekguy.atoum.phar --update
+    Checking if a new version is available... Done !
+    Update to version 'nightly-1568-201210311708'... Done !
+    Enable version 'nightly-1568-201210311708'... Done !
+    Atoum was updated to version 'nightly-1568-201210311708' successfully !
+
+If there is no newer version, atoum will stop immediately.
+
+    [shell]
+    php -d phar.readonly=0 mageekguy.atoum.phar --update
+    Checking if a new version is available... Done !
+    There is no new version available !
+
+atoum don't ask any confirmation to user to update phar because it's easy to return to previous version.
+
+#### List versions contained on archive
+
+To show versions contained on archive during updates, you have to call argument --list-available-versions, or -lav.
+
+    [shell]
+    php mageekguy.atoum.phar -lav
+    nightly-941-201201011548
+    * nightly-1568-201210311708
+
+List of previous versions on archive is shown. Current version is preceded of "*".
+
+#### Edit current version
+
+To activate an other version, simply use argument --enable-version, or -ev, and then the name of version to use.
+
+    [shell]
+    php -d phar.readonly=0 mageekguy.atoum.phar -ev DEVELOPMENT
+
+**Note**: Changing current version need to edit PHAR archive, by default php configuration doesn't allow it. That's why we have to use "-d phar.readonly=0".
+
+#### Delete old versions
+
+Over time, archive can contain many versions of atoum which are not used.
+
+To delete them, you have to use argument --delete-version, or -dv, and then the name of version to delete:
+
+    [shell]
+    php -d phar.readonly=0 mageekguy.atoum.phar -dv nightly-941-201201011548
+
+**Note**: You cannot delete current version.
+**Note**: Changing current version need to edit PHAR archive, by default php configuration doesn't allow it. That's why we have to use "-d phar.readonly=0".
+
 
 ### Composer
 
@@ -53,6 +115,18 @@ And finally execute
 If you want to use atoum directly from it's sources, you can clone or fork its git repository on
 github : git://github.com/mageekguy/atoum.git
 
+### symfony 1 plugin
+
+A plugin is available to use Atoum with symfony 1. Documentation and exemples are available
+at the following address :
+[https://github.com/agallou/sfAtoumPlugin](https://github.com/agallou/sfAtoumPlugin).
+
+### Symfony 2 Bundle
+
+A Bundle is available to use Atoum with Symfony 2. Documentation and exemples are available
+at the following address :
+[https://github.com/atoum/AtoumBundle](https://github.com/atoum/AtoumBundle).
+
 ### Using zend framework 2 component
 
 A library is available to use Atoum with zend framework 2. Documentation and exemples are available
@@ -79,10 +153,11 @@ be located in PROJECT_PATH/classes/HelloTheWorld.php
      */
     class HelloTheWorld
     {
-        public function getHiBob ()
+        public function getHiAtoum ()
         {
-            return "Hi Bob !";
+            return 'Hi atoum !';
         }
+
     }
 
 Now, let's write our first test class. This class will be located in
@@ -107,16 +182,19 @@ PROJECT_PATH/tests/HelloTheWorld.php
      */
     class HelloTheWorld extends atoum\test
     {
-        public function testGetHiBob ()
+        public function testGetHiAtoum ()
         {
-            //new instance of the tested class
-            $helloToTest = new \HelloTheWorld();
+            // create a new instance of class to test
+            $helloToTest = new \Vendor\Project\HelloWorld();
 
-            $this->assert
-                        //we expect the getHiBob method to return a string
-                        ->string($helloToTest->getHiBob())
-                        //and the string should be Hi Bob !
-                        ->isEqualTo('Hi Bob !');
+            $this
+                // we test than getHiAtoum method return a string.
+                ->string($helloToTest->getHiAtoum())
+                    // ... and string is what we expect !
+                    // Hi atoum !
+                    ->isEqualTo('Hi atoum !')
+            ;
+
         }
     }
 
@@ -145,7 +223,11 @@ You will see something like this
     > Running duration: 0.16 second.
     Success (1 test, 1/1 method, 2 assertions, 0 error, 0 exception) !
 
-You're done, your code is rock solid !
+In the above example we tested that the method getHiBob
+*    did return a string (step 1),
+*    and that this string was equal to « Hi Bob ! » (step 2).
+
+Tests are OK, all is green. You're done, your code is rock solid !
 
 ### Rule of Thumb ###
 
@@ -153,300 +235,7 @@ The basics when you’re testing things using atoum are the following :
 *    Tell atoum what you want to work on (a variable, an object, a string, an integer, …)
 *    Tell atoum the state the element is expected to be in (is equal to, is null, exists, …).
 
-In the above example we tested that the method getHiBob
-*    did return a string (step 1),
-*    and that this string was equal to « Hi Bob ! » (step 2).
 
-### More asserters ###
+## Use atoum on your IDE
 
-There are of course a lot more asserters in atoum. To see the complete list, see chapter 2.
-
-Let's see with a quick class some more asserters in atoum !
-
-First, the class to be tested, located in PROJECT_PATH/classes/BasicTypes.php.
-
-    [php]
-    <?php
-    class BasicTypes
-    {
-        public function getOne (){return 1;}
-        public function getTrue(){return true;}
-        public function getFalse(){return false;}
-        public function getHello(){return 'hello';}
-        public function create(){return new BasicTypes();}
-        public function getFloat(){return 1.1;}
-        public function getNull(){return null;}
-        public function getEmptyArray(){return array();}
-        public function getArraySizeOf3(){return range(0,2,1);}
-    }
-
-Now the test class, located in PROJECT_PATH/tests/BasicTypes.php
-
-    [php]
-    <?php //...
-    class BasicTypes extends atoum\test
-    {
-        public function testBoolean ()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->boolean($bt->getFalse())
-                        ->isFalse()//getFalse retourne bien false
-                    ->boolean($bt->getTrue())
-                        ->isTrue();//getTrue retourne bien true
-        }
-
-        public function testInteger ()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->integer($bt->getOne())
-                    ->isEqualTo(1)
-                    ->isGreaterThan(0);
-        }
-
-        public function testString()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->string($bt->getHello())
-                    ->isNotEmpty()
-                    ->isEqualTo('hello');
-        }
-
-        public function testObject ()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->object($bt->create())
-                    ->isInstanceOf('BasicTypes')
-                    ->isNotIdenticalTo($bt);//Une nouvelle instance
-        }
-
-        public function testFloat()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->float($bt->getFloat())
-                    ->isEqualTo(1.1);
-        }
-
-        public function testArray()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->array($bt->getArraySizeOf3())
-                        ->hasSize(3)
-                        ->isNotEmpty()
-                    ->array($bt->getEmptyArray())
-                        ->isEmpty();
-        }
-
-        public function testNull ()
-        {
-            $bt = new \BasicTypes();
-            $this->assert
-                    ->variable($bt->getNull())
-                    ->isNull();
-        }
-    }
-
-Here you are, you saw a complet and basic example of tests using atoum.
-
-### Testing a Singleton ###
-
-To test if your method always returns the same instance of the same object, you can ask atoum to
-check that the instances are identicals.
-
-    [php]
-    <?php //...
-    class Singleton extends atoum\test
-    {
-        public function testGetInstance()
-        {
-            $this->assert
-                    ->object(\Singleton::getInstance())
-                        ->isInstanceOf('Singleton')
-                        ->isIdenticalTo(\Singleton::getInstance());
-        }
-    }
-
-### Testing exceptions ###
-
-To test exceptions atoum is using closures (introduced in PHP 5.3).
-
-    [php]
-    class ExceptionLauncher extends atoum\test
-    {
-        public function testLaunchException ()
-        {
-            $exception = new \ExceptionLauncher();
-            $this->assert
-                     ->exception(function()use($exception){
-                                    $exception->launchException();
-                                })
-                     ->isInstanceOf('LaunchedException')
-                     ->hasMessage('Message in the exception');
-
-        }
-    }
-
-### Testing errors ###
-
-Again, atoum is nicely using closure to test errors (NOTICE, WARNING, …) :
-
-    [php]
-    class RaiseError extends atoum\test
-    {
-        public function testRaiseError ()
-        {
-            $error = new \RaiseError();
-
-            $this->assert->object($error);
-            $this->assert
-                     ->when(function()use($error){
-                            $error->raise();
-                     })
-                     ->error('This is an error', E_USER_WARNING)
-                        ->exists();
-                     //Sachant qu'il est possible de ne spécifier
-                     // ni message ni type attendu.
-        }
-    }
-
-### Testing using Mocks ###
-
-Mocks are of course supported by atoum !
-Generating a Mock from an interface
-
-atoum can generate a mock directly from an interface.
-
-    [php]
-    class UsingWriter extends atoum\test
-    {
-        public function testWithMockedInterface ()
-        {
-            $this->mockGenerator->generate('\IWriter');
-            $mockIWriter = new \mock\IWriter;
-
-            $usingWriter = new \UsingWriter();
-            //La méthode setIWriter attends un objet
-            //qui implemente l'interface IWriter
-            //  (setIWriter (IWriter $writer))
-            $usingWriter->setIWriter($mockIWriter);
-
-            $this->assert
-                    ->when(function () use($usingWriter) {
-                                    $usingWriter->write('hello');
-                    })
-                    ->mock($mockIWriter)
-                        ->call('write')
-                        ->once();
-        }
-    }
-
-### Generating a Mock from a class ###
-
-atoum can generate a mock directly from a class definition.
-
-    [php]
-    public function testWithMockedObject ()
-    {
-        $this->mockGenerator->generate('\Writer');
-        $mockWriter = new \mock\Writer;
-
-        $usingWriter = new \UsingWriter();
-        //La méthode setWriter attends un objet
-        //de type Writer (setWriter (Writer $writer))
-        $usingWriter->setWriter($mockWriter);
-
-        $this->assert
-                ->when(function () use($usingWriter) {
-                                $usingWriter->write('hello');
-                })
-                ->mock($mockWriter)
-                    ->call('write')
-                    ->once();
-    }
-
-There is also a shorter syntax to generate mock from a class definition.
-
-    [php]
-    public function testWithMockedObject ()
-    {
-        $mockWriter = new \mock\Writer;
-
-        //...
-    }
-
-atoum is able to automatically find the class definition to mock on demand so you don't have to call
-the mock generator.
-
-When requesting a mock instance for a class, do not forget to specify the full class path (including
-namespaces).
-
-    [php]
-    namespace Package\Writers
-    {
-        class SampleWriter implements Writer
-        {
-            //...
-        }
-
-    }
-
-    namespace
-    {
-        class UsingWriter 
-        {
-            public function write(\Package\Writers\Writer $writer, $string) 
-            {
-                $writer->write($string);
-            }
-        }
-    }
-
-In this example, the class we want to mock lives in the Package\Writers namespace, so to request a
-mock in our test we should do :
-
-    [php]
-    namespace Package\test\units;
-
-    class UsingWriter extends atoum\test
-    {
-        public function testWrite()
-        {                     
-            $this
-                ->if($mockWriter = new \mock\Package\Writers\SampleWriter())
-                ->then()
-                    ->when(function() use($mockWriter) {
-                        $usingWriter = new \UsingWriter();
-                        $usingWriter->write($mockWriter, 'Hello World!');  
-                    })	
-                    ->mock($mockWriter)
-                        ->call('write')
-                        ->withArguments('Hello World!')
-                        ->once()
-            ;
-        }
-    }
-
-### Generating a Mock from scratch ###
-
-atoum can also let you create and completely specify a mock object.
-
-    [php]
-    $this->mockGenerator->generate('WriterFree');
-    $mockWriter = new \mock\WriterFree;
-    $mockWriter->getMockController()->write = function($text){};
-
-    $usingWriter = new \UsingWriter();
-    $usingWriter->setFreeWriter($mockWriter);
-
-    $this->assert
-            ->when(function () use($usingWriter) {
-                            $usingWriter->write('hello');
-            })
-            ->mock($mockWriter)
-                ->call('write')
-                ->once();
+@todo.
