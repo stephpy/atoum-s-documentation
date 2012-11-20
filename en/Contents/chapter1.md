@@ -52,7 +52,7 @@ If there is no newer version, atoum will stop immediately.
     Checking if a new version is available... Done !
     There is no new version available !
 
-atoum doesn't ask a confirmation to user because it's easy to come back to previous version.
+atoum doesn't ask any confirmation to user because it's easy to come back to previous version.
 
 #### List versions contained on archive
 
@@ -95,7 +95,7 @@ To install atoum through composer, you must install composer
     [shell]
     curl -s https://getcomposer.org/installer | php
 
-Then, create a file named composer.json who contains 
+Then, create a file named composer.json who contains
 
     [json]
     {
@@ -104,7 +104,7 @@ Then, create a file named composer.json who contains
         }
     }
 
-And finally execute 
+And finally execute
 
     [shell]
     php composer.phar install
@@ -239,30 +239,29 @@ The basics when you’re testing things using atoum are the following :
 
 ## Sublime Text 2
 
-A [SublimeText 2 plugin](https://github.com/toin0u/Sublime-atoum) allows unit tests execution by atoum and show results
-on editor.
+A [SublimeText 2 plugin](https://github.com/toin0u/Sublime-atoum) allows atoum to run unit tests and display results right in editor.
 
-Informations related to installation and configuration are available on 
+Informations related to installation and configuration are available on
 [author blog](http://sbin.dk/2012/05/19/atoum-sublime-text-2-plugin/).
 
 ## VIM
 
-atoum has a plug-in which integrate him to VIM.
+atoum has a plugin which integrate him to VIM.
 
 - Tests can be executed easily
 - Report showed on VIM split.
 - Navigation on errors and jump to assertion line.
 
-### Installation of atoum plug-in in VIM
+### Installation of atoum plugin in VIM
 
-If you don't use atoum as a PHAR archive, the plug-in is located in resources/vim, named atoum.vba.
+If you don't use atoum as a PHAR archive, the plugin is located in resources/vim, named atoum.vba.
 
 Otherwhise, you have to launch command in *atoum* to extract file:
 
     [shell]
     php mageekguy.atoum.phar --extractRessourcesTo path/to/a/directory
 
-One the extraction is complete, atoum.vba file will be located in path/to/a/directory/resources/vim.
+Once the extraction is complete, atoum.vba file will be located in path/to/a/directory/resources/vim.
 Then, edit this file with VIM.
 
     [shell]
@@ -273,19 +272,19 @@ And call command:
     [vim]
     :source %
 
-### atoum plug-in usage in VIM
+### atoum plugin usage in VIM
 
-To use plug-in atoum have to be installed and you must be currently editing a file which contains a atoum unit tests.
+To use plugin, atoum has to be installed and you must be currently editing a file which contains a atoum unit tests.
 In this case, launch command:
 
     [vim]
     :Atoum
 
-Tests are launched, once complete, a report based on configuration file of atoum 
+Tests are launched, once complete, a report based on configuration file of atoum
 (located on ftpplugin/php/atoum.vim on your .vim directory) is generated on a new split.
 
-Obviously, you can define a mapping to launch this command by use a combination.
-By example, add this line on your .vimrc
+Obviously, you can define a mapping to launch this command using a key combination.
+For example, add this line on your .vimrc
 
     [vim]
     nnoremap *.php :Atoum
@@ -294,18 +293,18 @@ Usage of F12 key on your keyboard in normal mode will call command :Atoum.
 
 ### Management of atoum configuration files
 
-You can define an other configuration file for atoum by adding this line on your .vimrc file.
+You can define an other configuration file for atoum by adding this line to your .vimrc file.
 
     [vim]
     call atoum#defineConfiguration('/path/to/project/directory', '/path/to/atoum/configuration/file', '.php')
 
 
-It accepts 3 arguments:
+It takes 3 arguments:
 * A path to the directory which contains unit tests;
 * A path to the atoum configuration file ;
 * Unit tests file extensions.
 
-For more details on usage of this plug-in, use help command in VIM:
+For more details on usage of this plugin, use help command in VIM:
 
     [vim]
     :help atoum
