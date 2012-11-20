@@ -237,4 +237,75 @@ The basics when you’re testing things using atoum are the following :
 
 ## Use atoum on your IDE
 
-@todo.
+## Sublime Text 2
+
+A [SublimeText 2 plugin](https://github.com/toin0u/Sublime-atoum) allows unit tests execution by atoum and show results
+on editor.
+
+Informations related to installation and configuration are available on 
+[author blog](http://sbin.dk/2012/05/19/atoum-sublime-text-2-plugin/).
+
+## VIM
+
+atoum has a plug-in which integrate him to VIM.
+
+- Tests can be executed easily
+- Report showed on VIM split.
+- Navigation on errors and jump to assertion line.
+
+### Installation of atoum plug-in in VIM
+
+If you don't use atoum as a PHAR archive, the plug-in is located in resources/vim, named atoum.vba.
+
+Otherwhise, you have to launch command in *atoum* to extract file:
+
+    [shell]
+    php mageekguy.atoum.phar --extractRessourcesTo path/to/a/directory
+
+One the extraction is complete, atoum.vba file will be located in path/to/a/directory/resources/vim.
+Then, edit this file with VIM.
+
+    [shell]
+    vim path/to/atoum.vba
+
+And call command:
+
+    [vim]
+    :source %
+
+### atoum plug-in usage in VIM
+
+To use plug-in atoum have to be installed and you must be currently editing a file which contains a atoum unit tests.
+In this case, launch command:
+
+    [vim]
+    :Atoum
+
+Tests are launched, once complete, a report based on configuration file of atoum 
+(located on ftpplugin/php/atoum.vim on your .vim directory) is generated on a new split.
+
+Obviously, you can define a mapping to launch this command by use a combination.
+By example, add this line on your .vimrc
+
+    [vim]
+    nnoremap *.php :Atoum
+
+Usage of F12 key on your keyboard in normal mode will call command :Atoum.
+
+### Management of atoum configuration files
+
+You can define an other configuration file for atoum by adding this line on your .vimrc file.
+
+    [vim]
+    call atoum#defineConfiguration('/path/to/project/directory', '/path/to/atoum/configuration/file', '.php')
+
+
+It accepts 3 arguments:
+* A path to the directory which contains unit tests;
+* A path to the atoum configuration file ;
+* Unit tests file extensions.
+
+For more details on usage of this plug-in, use help command in VIM:
+
+    [vim]
+    :help atoum
